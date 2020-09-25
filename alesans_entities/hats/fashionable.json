@@ -1,0 +1,17 @@
+{
+	"i": 35,
+
+	"x": 7,
+	"y": 0,
+	"height": 4,
+	"graphic": "fashionable",
+
+	"bigx": -1,
+	"bigy": -1,
+	"bigheight": 5,
+	"biggraphic": "fashionablebig",
+	"raccoon": "fashionableraccoon",
+	"tiny": "fashionabletiny",
+
+	"directions": true
+}

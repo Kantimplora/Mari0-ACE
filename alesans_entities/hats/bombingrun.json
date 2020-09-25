@@ -1,0 +1,18 @@
+{
+	"i": 21,
+
+	"x": 6,
+	"y": 1,
+	"height": 2,
+	"graphic": "bombingrun",
+
+	"bigx": -2,
+	"bigy": 1,
+	"bigheight": 3,
+	"biggraphic": "bombingrunbig",
+	"raccoon": "banana",
+	"tanooki": "banana",
+	"tiny": "bombingruntiny",
+
+	"directions": true
+}

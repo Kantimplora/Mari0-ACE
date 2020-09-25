@@ -1,0 +1,17 @@
+{
+	"i": 34,
+
+	"x": 5,
+	"y": -14,
+	"height": 16,
+	"graphic": "balloon",
+
+	"bigx": -2,
+	"bigy": -15,
+	"bigheight": 16,
+	"biggraphic": "balloon",
+	"raccoon": "balloon",
+	"tiny": "balloontiny",
+
+	"directions": true
+}

@@ -1,0 +1,17 @@
+{
+	"i": 42,
+
+	"x": 5,
+	"y": 0,
+	"height": 11,
+	"graphic": "americanfootball",
+
+	"bigx": -3,
+	"bigy": -1,
+	"bigheight": 13,
+	"biggraphic": "americanfootballbig",
+	"raccoon": "americanfootballbig",
+	"tiny": "americanfootballtiny",
+
+	"directions": true
+}

@@ -1,0 +1,17 @@
+{
+	"i": 41,
+
+	"x": 9,
+	"y": -5,
+	"height": 8,
+	"graphic": "areyoureadykids",
+
+	"bigx": 2,
+	"bigy": -6,
+	"bigheight": 9,
+	"biggraphic": "areyoureadykidsbig",
+	"raccoon": "areyoureadykidsbig",
+	"tiny": "areyoureadykidstiny",
+
+	"directions": true
+}
