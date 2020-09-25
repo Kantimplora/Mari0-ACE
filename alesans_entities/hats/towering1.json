@@ -1,0 +1,18 @@
+{
+	"i": 3,
+
+	"x": 5,
+	"y": -1,
+	"height": 4,
+	"graphic": "towering1",
+
+	"bigx": -2,
+	"bigy": -2,
+	"bigheight": 5,
+	"biggraphic": "towering1big",
+	"raccoon": "towering1raccoon",
+	"tanooki": "towering1raccoon",
+	"tiny": "towering1tiny",
+
+	"directions": true
+}

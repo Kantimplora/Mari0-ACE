@@ -1,0 +1,18 @@
+{
+	"i": 2,
+
+	"x": 5,
+	"y": -3,
+	"height": 4,
+	"graphic": "tyrolean",
+
+	"bigx": -2,
+	"bigy": -3,
+	"bigheight": 5,
+	"biggraphic": "tyroleanbig",
+	"raccoon": "tyroleanraccoon",
+	"tanooki": "tyroleanraccoon",
+	"tiny": "tyroleantiny",
+
+	"directions": true
+}

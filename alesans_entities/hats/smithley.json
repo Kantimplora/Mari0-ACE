@@ -1,0 +1,17 @@
+{
+	"i": 37,
+
+	"x": 3,
+	"y": -3,
+	"height": 14,
+	"graphic": "smithley",
+
+	"bigx": -3,
+	"bigy": -1,
+	"bigheight": 14,
+	"biggraphic": "smithley",
+	"raccoon": "smithley",
+	"tanooki": "smithley",
+
+	"directions": true
+}

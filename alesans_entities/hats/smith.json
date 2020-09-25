@@ -1,0 +1,17 @@
+{
+	"i": 36,
+
+	"x": 3,
+	"y": -2,
+	"height": 11,
+	"graphic": "smith",
+
+	"bigx": -3,
+	"bigy": 0,
+	"bigheight": 12,
+	"biggraphic": "smithbig",
+	"raccoon": "smithbig",
+	"tanooki": "smithbig",
+
+	"directions": true
+}

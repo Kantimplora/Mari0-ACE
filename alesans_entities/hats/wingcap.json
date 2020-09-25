@@ -1,0 +1,27 @@
+{
+	"i": 38,
+
+	"x": 5,
+	"y": -3,
+	"height": 7,
+	"graphic": "wingcap",
+	"sliding": "wingcapsliding",
+
+	"bigx": -4,
+	"bigy": -7,
+	"bigheight": 11,
+	"biggraphic": "wingcapbig",
+	"bigsliding": "wingcapbigsliding",
+	"raccoon": "wingcapbig",
+	"raccoonsliding": "wingcapbigsliding",
+	"tanooki": "wingcaptanooki",
+	"tanookisliding": "wingcapslidingtanooki",
+
+	"tinyx": -4,
+	"tinyy": -7,
+	"tinyheight": 4,
+	"tiny": "wingcaptiny",
+	"tinysliding": "wingcaptinysliding",
+
+	"directions": true
+}

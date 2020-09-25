@@ -1,0 +1,17 @@
+{
+	"i": 39,
+
+	"x": 4,
+	"y": -3,
+	"height": 8,
+	"graphic": "sombrero",
+
+	"bigx": -5,
+	"bigy": -5,
+	"bigheight": 10,
+	"biggraphic": "sombrerobig",
+	"raccoon": "sombreroraccoon",
+	"tiny": "sombrerotiny",
+
+	"directions": true
+}
