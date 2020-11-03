@@ -766,8 +766,6 @@ rightclickvalues["pedestal"] = {"portals", "both", "1 only", "2 only", "none", "
 rightclickvalues["pokey"] = {"height", "default", 1, 2, 3, 4, 5, 6, 7, 8}
 rightclickvalues["snowpokey"] = {"height", "default", 1, 2, 3, 4, 5, 6, 7, 8}
 
-rightclickvalues["goombashoe"] = {"type", 1, 2}
-
 rightclickvalues["yoshi"] = {"color", 1, 2, 3, 4}
 
 rightclickvalues["spike"] = {"type", "spike", "snow"}
@@ -782,6 +780,17 @@ rightclickvalues["powblock"] = {"type", "blue", "red"}
 rightclickvalues["angrysun"] = {"type", "sun", "moon"}
 
 rightclicktype = {}
+
+rightclicktype["goombashoe"] = {
+	name = "goombashoe",
+	default = "false|1",
+	format = {
+		{"checkbox", 1, "wings", function(v) rightclickvalues2[1] = v; rightclickobjects[1].var = v end, default = false},
+		"type",
+		{"dropdown", 2, 4, function(v) rightclickobjects[3].var = v; rightclickvalues2[2] = v end,
+			{1,2}},
+	}
+}	
 
 rightclicktype["text"] = {
 	name = "text",
