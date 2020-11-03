@@ -8010,13 +8010,24 @@ function spawnenemy(t, x, y, r, spawner)
 				objtable, obj = "cheep", cheepcheep:new(x-.5, y-1/16, 1)
 			end
 		elseif t == "goombashoe" then
-			if (not tilequads[r[1]]["collision"]) or spawner then
-				if r[3] == 2 then
-					objtable, obj = "goomba", goomba:new(x-0.5, y-1/16, "goombaheel")
-				else
-					objtable, obj = "goomba", goomba:new(x-0.5, y-1/16, "goombashoe")
-				end
-			end
+  	 	 	if (not tilequads[r[1]]["collision"]) or spawner then
+ 				local v = convertr(r[3], {"bool", "num"})
+ 				local type
+  			  	if v[2] == 2 then
+  	    			if v[1] then
+        			    type =  "goombaheelwings"
+       				else
+       				    type =  "goombaheel"
+       				end
+       			end
+    		else
+      			if v[1] then
+                	type = "goombashoewings"
+        		else
+            		type = "goombashoe"
+        		end
+    		end
+    objtable, obj = "goomba", goomba:new(x-0.5, y-1/16, type)
 		elseif t == "bigcloud" then
 			if not tilequads[r[1]]["collision"] or spawner then
 				obj = mushroom:new(x-0.5, y-1/16, "bigcloud", r[3])
