@@ -27,7 +27,7 @@ imagestable = {  	"1", "2", "3", "blockdebrisimage", "coinblockanimationimage", 
 						"pblockimg", "spikeimg", "spikeballimg", "coinfrozenimg", "coinbrickfrozenimg", "helmetshellimg", "boxgelimg", "helmetpropellerimg", "helmetcannonimg",
 						"cannonballcannonimg", "clearpipeimg", "plantcreeperimg", "trackimg", "pneumatictubeimg", "dustimg", "platformtrackimg", "checkpointflagimg", "iceimg",
 						"snowspikeimg", "grinderimg", "fuzzyimg", "emancelaserimg", "iciclehugeimg", "mushroomfrozenimg", "frozenimg", "coinblockfrozenimg", "redpowblockimg",
-						"clawimg", "moonimg", "rouletteblockimg"}
+						"clawimg", "moonimg", "rouletteblockimg","goombashoewingsimg","shoeghostimg"}
 
 table.sort(imagestable, function(a, b) return a < b end)--sort alphabetically
 imagestable[1] = "smbtilesimg"
@@ -1251,6 +1251,24 @@ function loadquads(initial)
 		for x = 4, 6 do --just shoe
 			goombashoequad[y][x] = love.graphics.newQuad((x-4)*16, 8+(y-1)*24, 16, 16, 48, 96)
 		end
+	end
+
+	goombashoewingsquad = {}
+	for y = 1, 8 do
+		goombashoewingsquad[y] = {}
+		for x = 1, 4 do --goombainshoe
+			goombashoewingsquad[y][x] = love.graphics.newQuad((x-1)*18, (y-1)*24, 18, 24, 72, 96)
+		end --
+		for x = 5, 8 do --just shoe
+			goombashoewingsquad[y][x] = love.graphics.newQuad((x-5)*18, 8+(y-1)*24, 18, 16, 72, 96)
+		end
+	end
+
+	shoeghostquad = {} --Shoe squishy bois
+	y=1
+	shoeghostquad[y] = {}
+	for x=1,5 do
+		shoeghostquad[y][x] = love.graphics.newQuad((x-1)*26, (y-1)*16, 26, 16, 130, 16)
 	end
 	
 	wigglerquad = {}
