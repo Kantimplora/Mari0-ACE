@@ -874,6 +874,36 @@ function mario:update(dt)
 			self.portalgun = true
 		end
 	end
+
+	if self.supersizedshoe and self.size ~= 8 and self.animation ~= "grow1" and self.animation ~= "grow2" and self.animation ~= "shrink" then
+		if not inmap(self.x,self.y) then
+			self.controlsenabled = true
+		end
+		self.width = 24/16
+		self.height = 24/16
+		if not self.gpstate then
+			self.gpstate = "inactive"
+		end
+		if self.falling and downkey(self.playernumber) and self.gpstate == "inactive" then
+			self.gpstate = "active"
+		end
+		if self.gpstate == "active" then
+			if not self.gptimer then
+				self.gptimer = 0
+			end
+			self.gptimer = self.gptimer + dt
+			if self.gptimer > 0.5 then
+				self.gptimer = 0
+				self.gpstate = "falling"
+				self.static = false
+				self.speedx = 0
+				self.speedy = 30
+			else
+				self.controlsenabled = false
+				self.static = true
+			end
+		end
+	end
 	
 	--clear pipe invincibility
 	if self.clearpipeexitinvincibility and (not self.clearpipe) then
@@ -1923,7 +1953,7 @@ function mario:update(dt)
 
 	--coins
 	if not editormode then
-		if (self.size == 8 or self.size == 16) or bigmario then --collect coins as huge mario
+		if (self.size == 8 or self.size == 16 or self.supersizedshoe) or bigmario then --collect coins as huge mario
 			for x = math.ceil(self.x), math.ceil(self.x+self.width) do
 				for y = math.ceil(self.y), math.ceil(self.y+self.height) do
 					if inmap(x, y) then
@@ -2894,6 +2924,37 @@ function mario:movement(dt)
 				if self.shoe and self.shoe ~= "yoshi" and self[speedy] == 0 then --goomba shoe
 					self[speedy] = -goombashoehop; if self.shoe == "heel" then playsound(heelsound); heelsound:setPitch(1+(math.random(1,10)/20-.25)) end
 				end
+				if self.gravitydir == "down" and self.speedy > 6.7 then self.allowfly = true end
+
+
+
+				if self.wings and not self.blockfly and self.allowfly then
+					if jumpkey(self.playernumber) then
+						self.flytimer = self.flytimer - dt
+						self.ifly = true
+						if not self.asdfgkillmelmao then
+							self.asdfgkillmelmao = true
+							self.speedy = 0.3
+						end
+					if self.flytimer < -0.1 then
+						for i=1,2 do
+							if self.flytimer >= -1.15 then
+								self.falling = true
+								self.speedy = self.speedy + -0.8
+								self.animationtimer = 0.1835
+							else
+								self.asdfgkillmelmao = false
+								self.blockfly = true
+								self.animationtimer = 0
+							end
+						end
+					end
+					elseif self.ifly then
+						print("blocked")
+						self.asdfgkillmelmao = false
+						self.blockfly = true
+					end
+				end
 			end
 			
 		elseif marioleftkey and not self.statue then --MOVEMENT LEFT
@@ -2943,6 +3004,38 @@ function mario:movement(dt)
 				if self.shoe and self.shoe ~= "yoshi" and self[speedy] == 0 then --goomba shoe
 					self[speedy] = -goombashoehop; if self.shoe == "heel" then playsound(heelsound); heelsound:setPitch(1+(math.random(1,10)/20-.25)) end
 				end
+				if self.gravitydir == "down" and self.speedy > 6.7 then self.allowfly = true end
+
+
+
+				if self.wings and not self.blockfly and self.allowfly then
+					if jumpkey(self.playernumber) then
+						self.flytimer = self.flytimer - dt
+						self.ifly = true
+						if not self.asdfgkillmelmao then
+							self.asdfgkillmelmao = true
+							self.speedy = 0.3
+						end
+					if self.flytimer < -0.1 then
+						for i=1,2 do
+							if self.flytimer >= -1.15 then
+								self.falling = true
+								self.speedy = self.speedy + -0.8
+								self.animationtimer = 0.1835
+							else
+								self.asdfgkillmelmao = false
+								self.blockfly = true
+								self.animationtimer = 0
+							end
+						end
+					end
+					elseif self.ifly then
+						print("blocked")
+						self.asdfgkillmelmao = false
+						self.blockfly = true
+					end
+				end
+			end
 			end
 		end
 
@@ -3100,6 +3193,38 @@ function mario:movement(dt)
 						self[speedx] = 0
 						self.runframe = 1
 						--self.animationstate = "idle"
+					end
+				end
+			end
+				if self.gravitydir == "down" and self.speedy > 6.7 then self.allowfly = true end
+
+
+
+				if self.wings and not self.blockfly and self.allowfly then
+					if jumpkey(self.playernumber) then
+						self.flytimer = self.flytimer - dt
+						self.ifly = true
+						if not self.asdfgkillmelmao then
+							self.asdfgkillmelmao = true
+							self.speedy = 0.3
+						end
+					if self.flytimer < -0.1 then
+						for i=1,2 do
+							if self.flytimer >= -1.15 then
+								self.falling = true
+								self.speedy = self.speedy + -0.8
+								self.animationtimer = 0.1835
+							else
+								self.asdfgkillmelmao = false
+								self.blockfly = true
+								self.animationtimer = 0
+							end
+						end
+					end
+					elseif self.ifly then
+						print("blocked")
+						self.asdfgkillmelmao = false
+						self.blockfly = true
 					end
 				end
 			end
@@ -4322,7 +4447,63 @@ function mario:floorcollide(a, b)
 	if self:globalcollide(a, b) then
 		return false
 	end
-	
+
+	if self.wings then
+		self.allowfly = false
+		self.blockfly = false
+		self.ifly = false
+		self.asdfgkillmelmao = false
+		self.flytimer = 0 
+	end
+
+	if self.gpstate == "falling" then --sorry aidan :pacsive:
+		local yes;
+		if downkey(self.playernumber) then
+			yes = false
+		else
+			yes = true
+		end
+		if a == "tile" then
+			local x, y = b.cox, b.coy
+				hitblock(b.cox,b.coy)
+			if tilequads[map[b.cox][b.coy][1]].breakable or tilequads[map[b.cox][b.coy][1]].glass or tilequads[map[b.cox][b.coy][1]].coinblock or (tilequads[map[x][y][1]].debris and blockdebrisquads[tilequads[map[x][y][1]].debris]) then 
+				destroyblock(b.cox, b.coy)
+				self.speedy = 3
+			else
+				yes = true
+			end
+			self.killedenemy = false
+		elseif a == "flipblock" or a == "powblock" or a == "rouletteblock" then
+			b:hit()
+			self.speedy = 3
+			self.killedenemy = false
+		elseif mariohammerkill[a] or a == "muncher" or b.meltice then
+			if b.shotted then
+				b:shotted("left","powblock")
+			elseif b.meltice then
+				b:meltice("destroy")
+			end
+			self.killedenemy = true
+			if not yes then
+				self.speedy = 3
+				return
+			end
+		end
+		if yes then
+			self.gpstate = "inactive"
+			self.controlsenabled = true
+			if self.killedenemy then
+				self.killedenemy = false
+			else
+				local obj = fireball:new(self.x, self.y+1, dir, false, "shoeghost")
+				local obj2 = fireball:new(self.x, self.y+1, dir, false, "shoeghost")
+				obj.speedx = 10
+				obj2.speedx = -10
+				table.insert(objects["fireball"], obj)
+				table.insert(objects["fireball"], obj2)
+			end
+		end
+	end
 	if a == "spring" then
 		if b.green then
 			self:hitspringgreen(b)
@@ -6082,7 +6263,7 @@ function mario:ceilcollide(a, b)
 			end
 			
 			--Check if it should bounce the block next to it, or push mario instead (Hello, devin hitch!)
-			if self.x < x-22/16 and self.gravitydir ~= "up" and self.size ~= 8 and self.size ~= 16 then
+			if self.x < x-22/16 and self.gravitydir ~= "up" and self.size ~= 8 and self.size ~= 16 and not self.supersizedshoe then
 				--check if block left of it is a better fit
 				if x > 1 and tilequads[map[x-1][y][1]].collision == true then
 					x = x - 1
@@ -8879,7 +9060,7 @@ function mario:freeze() --ice ball
 	end
 end
 
-function mario:shoed(shoe, initial, drop) --get in shoe (type, make sound?, drop shoe?)
+function mario:shoed(shoe, initial, drop) --get in shoe (type, make sound?, drop shoe?)]
 	if shoe then
 		self.shoeoffsetY = 0
 		if self.ducking then
@@ -8917,6 +9098,19 @@ function mario:shoed(shoe, initial, drop) --get in shoe (type, make sound?, drop
 				self.shoeoffsetY = self.characterdata.bigshoeoffsetY
 			end
 			self.weight = 2
+		end
+		if type(shoe) == "string" and shoe:sub(string.len(shoe)-2,string.len(shoe)) == "big" then
+			self.supersizedshoe = true
+			shoe = string.gsub(shoe,"big","")
+		end
+		if shoe == "shoewings" or shoe == "heelwings" then
+			self.wings = true
+			self.flytimer = 0
+			if shoe == "heelwings" then
+				shoe = "heel"
+			else
+				shoe = true
+			end
 		end
 		if self.shoe then
 			return false
@@ -8964,9 +9158,19 @@ function mario:shoed(shoe, initial, drop) --get in shoe (type, make sound?, drop
 				obj.animationdirection = "right"
 			end
 			obj.heel = (self.shoe == "heel")
+			obj.wings = self.wings
+			if self.supersizedshoe then
+				supersizeentity(obj)
+				obj.y = self.y
+				obj.x = self.x
+			end
 			table.insert(objects["mushroom"], obj)
 		end
 		self.shoe = false
+		self.wings = false
+		self.supersizedshoe = false
+		self.fuckvariables = false
+		self:setsize(self.size)
 		if self.fireenemy then
 			self.customcolors = self.colors
 			self.dofireenemy = self.fireenemy
@@ -8977,7 +9181,6 @@ function mario:shoed(shoe, initial, drop) --get in shoe (type, make sound?, drop
 	end
 	return true
 end
-
 function mario:helmeted(helmet)
 	if helmet then
 		if self.helmet or self.size == -1 or (helmet == "cannonbox" and (self.size == 8 or self.size == 16)) then
