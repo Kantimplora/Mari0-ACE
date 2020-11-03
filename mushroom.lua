@@ -135,13 +135,34 @@ function mushroom:update(dt)
 		end
 		
 		if self.t == "goombashoe" then
+			if self.wings then
+				self.graphic = goombashoewingsimg
+				self.quad = goombashoequad[spriteset][5]
+			end
 			self.animationtimer = (self.animationtimer + dt)%(goombaanimationspeed*2)
-			if self.heel then
+			if self.heel and not self.wings then
 				self.quad = goombashoequad[spriteset][6]
 			elseif self.animationtimer > goombaanimationspeed then
-				self.quad = goombashoequad[spriteset][5]
+
+				if self.wings then
+					if self.heel then
+						self.quad = goombashoewingsquad[spriteset][8]
+					else
+						self.quad = goombashoewingsquad[spriteset][6]
+					end
+				else
+					self.quad = goombashoequad[spriteset][5]
+				end
 			else
-				self.quad = goombashoequad[spriteset][4]
+				if self.wings then
+					if self.heel then
+						self.quad = goombashoewingsquad[spriteset][7]
+					else
+						self.quad = goombashoewingsquad[spriteset][5]
+					end
+				else
+					self.quad = goombashoequad[spriteset][4]
+				end
 			end
 		end
 		
@@ -209,7 +230,19 @@ function mushroom:use(a, b) --DUDE MUSHROOMS LMAO
 				self.destroy = false
 				self.drawable = true
 			elseif self.heel then
-				b:shoed("heel")
+				if self.wings then
+					if self.supersized then
+						b:shoed("heelwingsbig")
+					else
+						b:shoed("heelwings")
+					end
+				else
+					if self.supersized then
+						b:shoed("heelbig")
+					else
+						b:shoed("heel")
+					end
+				end
 			elseif self.t == "bigcloud" then
 				if self.infinite then
 					b:shoed("cloudinfinite")
@@ -219,7 +252,19 @@ function mushroom:use(a, b) --DUDE MUSHROOMS LMAO
 			elseif self.t == "drybonesshell" then
 				b:shoed("drybonesshell")
 			else
-				b:shoed(true)
+				if self.wings then
+					if self.supersized then
+						b:shoed("shoewingsbig")
+					else
+						b:shoed("shoewings")
+					end
+				else
+					if self.supersized then
+						b:shoed("shoebig")
+					else
+						b:shoed(true)
+					end
+				end
 			end
 		end
 	end
