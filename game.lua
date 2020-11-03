@@ -3813,17 +3813,111 @@ function drawplayer(i, x, y, r, pad, drop)
 			love.graphics.draw(drybonesshellimg, starquad[spriteset][frame], math.floor(((px-xscroll)*16+offsetX)*scale), math.floor(((py-yscroll)*16-offsetY)*scale), v.rotation, -dirscale, horscale, 8, y)
 		end
 	elseif v.shoe and v.shoe ~= "yoshi" then
-		local frame = ((math.floor(coinanimation*(5/6)-4))%2)+4
-		if v.shoe == "heel" then
-			frame = 6
+		local frame;
+
+		if not v.wings then
+			frame = ((math.floor(coinanimation*(5/6)-4))%2)+4
 		end
+		if v.shoe == "heel" then
+			if not v.asdfgkillmelmao then v.saveframe = 7 end
+		else
+			if not v.asdfgkillmelmao then v.saveframe = 5 end
+		end
+		
+		frame = (frame or v.saveframe)
+
+		if not v.frametimer then
+			v.frametimer = 0
+		end
+		if v.wings and v.shoe ~= "heel" then
+			if v.asdfgkillmelmao then
+				v.frametimer = v.frametimer + nondt()
+				if v.frametimer > 0.05 then
+					if frame == 5 then
+						v.saveframe = 6
+					else
+						v.saveframe = 5
+					end
+					v.frametimer = 0
+				end
+			else
+				frame = ((math.floor(coinanimation*(5/6)-4))%2)+5
+			end
+		end
+		if v.shoe == "heel" then
+			if v.wings then
+				if v.asdfgkillmelmao then
+					v.frametimer = v.frametimer + nondt()
+					if v.frametimer > 0.5 then
+						v.frametimer = v.frametimer - 0.1
+						if frame == 7 then
+							v.saveframe = 8
+						else
+							v.saveframe = 7
+						end
+					end
+				else
+					frame = ((math.floor(coinanimation*(5/6)-4))%2)+7
+				end
+			else
+				frame = 6
+			end
+		end
+
 		local y = -offsetY - (v.height*16) + v.characterdata.shoeimgoffsetY
 		if v.animationscaley == 3 then
 			y = -offsetY - (v.height*16) + v.characterdata.shoeimghugeoffsetY
 		elseif v.animationscaley == 2 then
 			y = -offsetY - (v.height*16) + v.characterdata.shoeimghugeclassicoffsetY
 		end
-		love.graphics.draw(goombashoeimg, goombashoequad[spriteset][frame], math.floor(((px-xscroll)*16+offsetX)*scale), math.floor(((py-yscroll)*16-offsetY)*scale), v.rotation, -dirscale, horscale, 8, y)
+
+		if v.supersizedshoe and not v.animationscaley then
+
+			if v.size ~= v.savesize then
+				v.fuckvariables = false
+			end
+				v.savesize = v.size
+			v.supersizedshoescale = 2
+
+			if v.size == -1 then
+				v.supersizedshoeoffsety = -1.9*16
+				v.supersizedshoeoffsetx = 0*16
+			elseif v.size >= 2 and (v.size ~= 8 or v.size ~= 16) then
+				v.supersizedshoeoffsety = -1.4*16
+			else
+				v.supersizedshoeoffsety = -1.6*16
+			end
+
+			if not v.fuckvariables and v.animation ~= "grow1" and v.animation ~= "grow2" and v.animation ~= "shrink" then
+				print("offseted")
+				if v.size == -1 then
+					v.offsetY = 2
+					v.offsetX = 12
+					v.y = v.y - 1.13
+				elseif v.size >= 2 and (v.size ~= 8 or v.size ~= 16) then
+					v.offsetY = 11
+					v.offsetX = 11
+				else
+					v.offsetX = 11
+				end
+				v.fuckvariables = true
+
+			end
+			--god damm for some reason i think this would be more ez than i think
+		else
+			v.supersizedshoescale = false
+			v.supersizedshoeoffsety = false
+			v.supersizedshoeoffsetx = false
+		end
+		--print(v.fuckvariables,v.offsetX)
+		--print(frame,v.saveframe,v.frametimer,nondt())
+
+		if v.wings then
+			frame = (frame or v.saveframe)
+			love.graphics.draw(goombashoewingsimg, goombashoewingsquad[spriteset][frame], math.floor((((px-xscroll)*16+offsetX)+(v.supersizedshoeoffsetx or 0))*scale), math.floor((((py-yscroll)*16-offsetY)+(v.supersizedshoeoffsety or 0))*scale), v.rotation, -dirscale*(v.supersizedshoescale or 1), horscale*(v.supersizedshoescale or 1), 8, y)
+		else
+			love.graphics.draw(goombashoeimg, goombashoequad[spriteset][frame], math.floor((((px-xscroll)*16+offsetX)+(v.supersizedshoeoffsetx or 0))*scale), math.floor((((py-yscroll)*16-offsetY)+(v.supersizedshoeoffsety or 0))*scale), v.rotation, -dirscale*(v.supersizedshoescale or 1), horscale*(v.supersizedshoescale or 1), 8, y)
+		end
 	end
 
 	--ice block
