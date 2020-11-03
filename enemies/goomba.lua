@@ -165,6 +165,25 @@ function goomba:init(x, y, t)
 		self.jumptimer = 0
 		self.speed = goombaspeed*2.5
 		self.weight = 2
+	elseif self.t == "goombashoewings" or self.t == "goombaheelwings" then
+		self.y = y-23/16
+		self.height = 24/16
+		self.graphic = goombashoewingsimg
+		if self.t == "goombaheelwings" then
+			self.quad = goombashoewingsquad[spriteset][3]
+			self.heel = true
+		else
+			self.quad = goombashoewingsquad[spriteset][1]
+		end
+		self.offsetY = -5
+		self.quadcenterY = 12
+		self.animationdirection = "right"
+		self.jumptimer = 0
+		self.speed = goombaspeed*2.5
+		self.weight = 2
+		self.wings = true
+		self.t = "goombashoe"
+
 	elseif self.t == "wiggler" or self.t == "wigglerchild" or self.t == "wigglerangry" then
 		self.graphic = wigglerimg
 		self.quad = wigglerquad[1][1]
@@ -327,12 +346,27 @@ function goomba:update(dt)
 					else
 						self.quad = paragoombaquad[spriteset][1]
 					end
-				
 				elseif self.t == "goombashoe" then
-					if self.quad == goombashoequad[spriteset][1] then
-						self.quad = goombashoequad[spriteset][2]
-					elseif not self.heel then
-						self.quad = goombashoequad[spriteset][1]
+					if self.wings then
+						if self.heel then
+							if self.quad == goombashoewingsquad[spriteset][3] then
+								self.quad = goombashoewingsquad[spriteset][4]
+							else
+								self.quad = goombashoewingsquad[spriteset][3]
+							end
+						else
+							if self.quad == goombashoewingsquad[spriteset][1] then
+								self.quad = goombashoewingsquad[spriteset][2]
+							else
+								self.quad = goombashoewingsquad[spriteset][1]
+							end
+						end
+					else
+						if self.quad == goombashoequad[spriteset][1] then
+							self.quad = goombashoequad[spriteset][2]
+						elseif not self.heel then
+							self.quad = goombashoequad[spriteset][1]
+						end
 					end
 				elseif self.t == "wigglerchild" then
 					local i = 1
@@ -491,6 +525,24 @@ function goomba:update(dt)
 			end
 		end
 		
+		if self.t == "goombashoe" and not self.frozen and self.flytimer and self.wings then
+			self.flytimer = self.flytimer - dt
+ 			if self.flytimer < -0.1 then
+				for i=1,2 do
+					if self.flytimer >= -1.15 then
+					if not self.notfly then
+						self.speedy = 10
+						self.notfly = true
+					end
+					self.speedy = self.speedy + -0.8
+					self.animationtimer = 0.1835
+					else
+					self.notfly = false
+					self.animationtimer = 0
+					end
+				end
+			end
+		end
 		if (self.t == "fighterfly" or self.t == "goombashoe") and not self.frozen and self.jumptimer > 0 then
 			self.jumptimer = math.max(0, self.jumptimer - dt)
 			if self.jumptimer == 0 then
@@ -848,6 +900,12 @@ function goomba:shotted(dir) --fireball, star, turtle
 			obj.uptimer = mushroomtime+0.00001
 			obj.animationdirection = self.animationdirection
 			obj.heel = self.heel
+			obj.wings = self.wings
+			if self.supersized then
+				supersizeentity(obj)
+				obj.y = self.y + 1.5
+				obj.x = self.x
+			end
 			table.insert(objects["mushroom"], obj)
 		end
 	elseif self.t == "wiggler" then
@@ -1097,6 +1155,10 @@ function goomba:floorcollide(a, b)
 		
 		if self.t == "goombashoe" then
 			self.jumptimer = goombashoejumpdelay
+			if self.wings then
+				self.flytimer = goombashoeflydelay
+				self.notfly = false
+			end
 		else
 			self.quad = paragoombaquad[spriteset][3]
 			self.jumptimer = fighterflyjumpdelay
